@@ -40,10 +40,17 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           src: 'src/index.ts'
           branch: 'main'
+
       - uses: actions/upload-artifact@v1
         with:
           name: dist
           path: dist/
+
+      - name: Commit dist directory
+        run: |
+          git add dist/
+          git commit -m "Add dist directory"
+          git push origin main
 
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
