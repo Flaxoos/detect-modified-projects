@@ -46,6 +46,12 @@ jobs:
           name: dist
           path: dist/
 
+      - name: Commit dist directory
+        run: |
+          git add dist/
+          git commit -m "Add dist directory"
+          git push origin main
+
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
         id: tag_version
