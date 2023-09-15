@@ -1,6 +1,6 @@
 {
   "name": "@actions/detect-modified-projects",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Detects modified projects in a the repository, using git diff",
   "main": "dist/index.js",
   "scripts": {
