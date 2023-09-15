@@ -41,21 +41,15 @@ jobs:
           src: 'src/index.ts'
           branch: 'main'
 
-      - uses: actions/upload-artifact@v1
-        with:
-          name: dist
-          path: dist/
-
-      - name: Commit dist directory
-        run: |
-          git add dist/
-          git commit -m "Add dist directory"
-          git push origin main
+      - name: Get latest commit SHA
+        id: get-sha
+        run: echo "LATEST_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
+          commit_sha: ${{ steps.get-sha.outputs.LATEST_SHA }}
           custom_tag: ${{ steps.npm-build.outputs.version }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
