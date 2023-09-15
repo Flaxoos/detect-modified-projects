@@ -38,7 +38,7 @@ jobs:
       - uses: tool3/ncc@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          src: 'index.ts'
+          src: 'src/index.ts'
           branch: 'main'
       - uses: actions/upload-artifact@v1
         with:
