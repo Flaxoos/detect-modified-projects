@@ -41,15 +41,34 @@ jobs:
           src: 'src/index.ts'
           branch: 'main'
 
-      - name: Get latest commit SHA
-        id: get-sha
-        run: echo "LATEST_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+      - uses: actions/upload-artifact@v1
+        with:
+          name: version
+          path: version.txt
+        run: echo $VERSION > version.txt
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: dist
+          path: dist/
+
+  tag:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: dist
+
+      - name: Get the version
+        id: get_version
+        run: echo "::set-output name=version::$(cat version.txt)"
 
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          commit_sha: $LATEST_SHA
-          custom_tag: ${{ steps.npm-build.outputs.version }}
+          custom_tag: ${{ steps.get_version.outputs.version }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
