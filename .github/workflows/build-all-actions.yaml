@@ -1,4 +1,4 @@
-name: Build All Actions
+name: Build And Tag
 
 on:
   pull_request:
@@ -34,6 +34,10 @@ jobs:
           echo "Built version $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "::set-output name=version::$VERSION"
+
+      # Delete the dist directory if it exists
+      - name: Delete dist directory
+        run: rm -rf dist/
 
       # Run ncc to generate dist
       - uses: tool3/ncc@master
