@@ -97,7 +97,7 @@ jobs:
       # Extract the version from the file and set it as an output variable
       - name: Get the version
         id: get_version
-        run: echo "::set-output name=version::$(cat detect-modified-projects/version.txt)"
+        run: echo "::set-output name=version::$(cat version)"
 
       # Use the version for tagging
       - name: Bump version and push tag
