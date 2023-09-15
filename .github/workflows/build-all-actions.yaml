@@ -31,13 +31,10 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "::set-output name=version::$VERSION"
 
-
-      - name: Tag Actions
+      - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
-        run: |
-          VERSION=${{ steps.npm-build.outputs.version }}
-          git tag new-tag
-          git push origin new-tag
-          echo "Tagging with version $VERSION"
-          git tag $VERSION
-          git push origin $VERSION
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          custom_tag: ${{ steps.npm-build.outputs.version }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
