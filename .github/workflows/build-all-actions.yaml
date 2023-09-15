@@ -50,6 +50,6 @@ jobs:
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          commit_sha: ${{ steps.get-sha.outputs.LATEST_SHA }}
+          commit_sha: $LATEST_SHA
           custom_tag: ${{ steps.npm-build.outputs.version }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
