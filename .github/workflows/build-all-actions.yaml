@@ -35,15 +35,20 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "::set-output name=version::$VERSION"
 
-      # Pull latest changes
-      - name: Pull latest changes
+      # Delete the dist directory if it exists and commit the deletion
+      - name: Delete dist directory and commit the change
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git pull
+          rm -rf dist/
+          git add -A
+          git commit -m "Delete dist directory" || echo "No changes to commit"
+          git push origin ${GITHUB_REF}
 
       # Run ncc to generate dist
       - uses: tool3/ncc@master
+        name: Generate dist
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           src: 'src/index.ts'
@@ -62,6 +67,7 @@ jobs:
 
       # Upload the build artifact
       - uses: actions/upload-artifact@v1
+        name: Upload build artifact
         with:
           name: dist
           path: dist/
