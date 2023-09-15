@@ -8,13 +8,9 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install TypeScript globally
-RUN npm install -g typescript
+RUN npm install
 
 # Install any needed packages specified in package.json
 RUN npm run build
-
-# Compile TypeScript code
-COPY . .
-RUN tsc
 
 ENTRYPOINT ["node", "dist/index.js"]
