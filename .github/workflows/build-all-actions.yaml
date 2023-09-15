@@ -38,9 +38,10 @@ jobs:
       # Delete the dist directory if it exists and commit the deletion
       - name: Delete dist directory and commit the change
         run: |
-          rm -rf dist/
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git pull
+          rm -rf dist/
           git add -A
           git commit -m "Delete dist directory" || echo "No changes to commit"
           git push origin ${GITHUB_REF}
@@ -79,6 +80,11 @@ jobs:
 
 
     steps:
+      # Download the build artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: dist
+
       # Download the version information
       - name: Download version information
         uses: actions/download-artifact@v1
