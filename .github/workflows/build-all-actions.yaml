@@ -35,6 +35,15 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "::set-output name=version::$VERSION"
 
+      - uses: tool3/ncc@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          src: 'index.ts'
+      - uses: actions/upload-artifact@v1
+        with:
+          name: dist
+          path: dist/
+
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
         id: tag_version

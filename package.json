@@ -4,7 +4,7 @@
   "description": "Detects modified projects in a the repository, using git diff",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build src/index.ts --license licenses.txt"
+    "build": "tsc --build"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
