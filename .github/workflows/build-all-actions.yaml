@@ -28,7 +28,7 @@ jobs:
       - name: Npm Build
         id: npm-build
         run: |
-          npm install
+          npm install production
           npm run build
           VERSION=$(node -p "require('./package.json').version")
           echo "Built version $VERSION"
