@@ -1,6 +1,6 @@
 ## Execute gradle tasks on projects
 
-This GitHub Action allows you to detect modified subprojects in a monorepo, this can be  
+This GitHub Action allows you to detect modified subprojects in a monorepo, so you can execute operations like build and publish only on those projects, allowing you to reduce the number of workflows per project
 
 ### Inputs
 
