@@ -1,0 +1,14 @@
+name: 'Detect modified projects'
+description: 'Detects modified projects'
+inputs:
+  project_prefixes:
+    required: false
+    description: 'Prefix for projects to detect, if not provided, all subprojects will be detected'
+
+outputs:
+  modified_projects:
+    description: 'Modified projects, comma separated'
+
+runs:
+  using: node16
+  main: dist/index.js

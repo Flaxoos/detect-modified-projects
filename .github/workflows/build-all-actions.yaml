@@ -1,0 +1,48 @@
+name: Build All Actions
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        action_directory: [detect-modified-projects, execute-gradle-tasks-on-projects]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '19.7.0'
+
+      - name: Install dependencies and build
+        run: |
+          cd ${{ matrix.action_directory }}
+          npm install
+          npm run build
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Built version $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "::set-output name=version::$VERSION"
+
+
+      - name: Tag Actions
+        if: github.ref == 'refs/heads/main'
+        run: |
+          VERSION=${{ steps.build_step.outputs.version }}
+          git tag new-tag
+          git push origin new-tag
+          echo "Tagging with version $VERSION"
+          git tag $VERSION
+          git push origin $VERSION
