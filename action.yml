@@ -10,5 +10,5 @@ outputs:
     description: 'Modified projects, comma separated'
 
 runs:
-  using: node16
-  main: dist/index.js
+  using: 'docker'
+  image: 'Dockerfile'
