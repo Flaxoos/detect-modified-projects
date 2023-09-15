@@ -12,11 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        action_directory: [detect-modified-projects, execute-gradle-tasks-on-projects]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,9 +21,9 @@ jobs:
         with:
           node-version: '19.7.0'
 
-      - name: Install dependencies and build
+      - name: Npm Build
+        id: npm-build
         run: |
-          cd ${{ matrix.action_directory }}
           npm install
           npm run build
           VERSION=$(node -p "require('./package.json').version")
@@ -40,7 +35,7 @@ jobs:
       - name: Tag Actions
         if: github.ref == 'refs/heads/main'
         run: |
-          VERSION=${{ steps.build_step.outputs.version }}
+          VERSION=${{ steps.npm-build.outputs.version }}
           git tag new-tag
           git push origin new-tag
           echo "Tagging with version $VERSION"
